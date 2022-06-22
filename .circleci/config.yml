@@ -53,7 +53,6 @@ jobs:
             cd frontend &&\
             npm install &&\
             npm run build
-            npm audit fix --audit-level=critical
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
@@ -71,7 +70,6 @@ jobs:
             cd backend
             npm install
             npm run build
-            npm audit fix --audit-level=critical
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
@@ -129,7 +127,8 @@ jobs:
             cd frontend
             npm install
             npm install oauth-sign@^0.9.0
-            npm audit --audit-level=critical --force
+            npm audit fix --audit-level=critical --force
+            npm audit --audit-level=critical
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
