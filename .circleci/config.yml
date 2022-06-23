@@ -30,7 +30,7 @@ commands:
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
             #SUCCESS = 1
-            SUCCESS=$(https://kvdb.io/VuxKiD8VM561oXMCGAUF2v/migrations-<< parameters.workflow_id >>)
+            SUCCESS=$(https://kvdb.io/QBmhzqzkSi6yoQoxYbhemE/migrations-<< parameters.workflow_id >>)
             echo $SUCCESS
             if(( $SUCCESS==1 ));
             then
@@ -188,7 +188,7 @@ jobs:
               --filters "Name=tag:project,Values=udapeople-${CIRCLE_WORKFLOW_ID:0:4}" \
               --output text >> .circleci/ansible/inventory.txt
             
-            curl https://kvdb.io/VuxKiD8VM561oXMCGAUF2v/hosts-deployed-${CIRCLE_WORKFLOW_ID:0:4} \
+            curl https://kvdb.io/QBmhzqzkSi6yoQoxYbhemE/hosts-deployed-${CIRCLE_WORKFLOW_ID:0:4} \
               -d `aws ec2 describe-instances \
                 --query 'Reservations[*].Instances[*].PublicIpAddress' \
                 --filters "Name=tag:project,Values=udapeople-${CIRCLE_WORKFLOW_ID:0:4}" \
@@ -278,7 +278,7 @@ jobs:
             cd backend
             if grep -q "success" migrations-${CIRCLE_WORKFLOW_ID}.txt
             then
-              curl https://kvdb.io/VuxKiD8VM561oXMCGAUF2v/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
+              curl https://kvdb.io/QBmhzqzkSi6yoQoxYbhemE/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
             fi
 
   deploy-frontend:
@@ -296,7 +296,7 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            BACKEND_IP=$(curl https://kvdb.io/VuxKiD8VM561oXMCGAUF2v/hosts-deployed-${CIRCLE_WORKFLOW_ID:0:4})
+            BACKEND_IP=$(curl https://kvdb.io/QBmhzqzkSi6yoQoxYbhemE/hosts-deployed-${CIRCLE_WORKFLOW_ID:0:4})
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
       - run:
@@ -307,7 +307,7 @@ jobs:
 
             npm audit fix
 
-            BACKEND_IP=$(curl https://kvdb.io/VuxKiD8VM561oXMCGAUF2v/hosts-deployed-${CIRCLE_WORKFLOW_ID:0:4})
+            BACKEND_IP=$(curl https://kvdb.io/QBmhzqzkSi6yoQoxYbhemE/hosts-deployed-${CIRCLE_WORKFLOW_ID:0:4})
 
             export API_URL="http://${BACKEND_IP}:3030"
             echo "API_URL=${API_URL}"
@@ -374,7 +374,7 @@ jobs:
       - run:
           name: Backend smoke test.
           command: |
-            BACKEND_IP=$(curl https://kvdb.io/VuxKiD8VM561oXMCGAUF2v/hosts-deployed-${CIRCLE_WORKFLOW_ID:0:4})
+            BACKEND_IP=$(curl https://kvdb.io/QBmhzqzkSi6yoQoxYbhemE/hosts-deployed-${CIRCLE_WORKFLOW_ID:0:4})
             export API_URL="http://${BACKEND_IP}:3030/api/status"
             echo "${API_URL}"
             curl ${API_URL}
@@ -407,7 +407,7 @@ jobs:
             export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
               --stack-status-filter CREATE_COMPLETE --no-paginate --output text))
 
-            curl https://kvdb.io/VuxKiD8VM561oXMCGAUF2v/workflow_id -d "${OLD_WORKFLOW_ID}"
+            curl https://kvdb.io/QBmhzqzkSi6yoQoxYbhemE/workflow_id -d "${OLD_WORKFLOW_ID}"
 
             echo Old Workflow Id: ${OLD_WORKFLOW_ID}
             echo Actual Workflow Id: ${CIRCLE_WORKFLOW_ID:0:4}
@@ -435,7 +435,7 @@ jobs:
           name: Remove old stacks and files
           command: |
             # Get old workflow id
-            export OLD_WORKFLOW_ID=$(curl https://kvdb.io/VuxKiD8VM561oXMCGAUF2v/workflow_id)
+            export OLD_WORKFLOW_ID=$(curl https://kvdb.io/QBmhzqzkSi6yoQoxYbhemE/workflow_id)
             # Get stack list
             export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
               --stack-status-filter CREATE_COMPLETE --no-paginate --output text))
